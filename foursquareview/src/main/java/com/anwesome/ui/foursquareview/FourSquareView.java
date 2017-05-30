@@ -16,6 +16,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class FourSquareView extends View {
     private int time = 0,w,h;
+    private AnimationHandler animationHandler;
     private ConcurrentLinkedQueue<Square> squares = new ConcurrentLinkedQueue<>();
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private int firstColor = Color.parseColor("#009688"),secondColor = Color.parseColor("#00BCD4"),thirdColor = Color.parseColor("#1E88E5"),fourthColor = Color.parseColor("#f44336");
@@ -48,16 +49,19 @@ public class FourSquareView extends View {
                     y += h/2;
                 }
             }
+            animationHandler = new AnimationHandler();
         }
         for(Square square:squares) {
             square.draw(canvas);
         }
         time++;
+        animationHandler.animate();
     }
     public boolean onTouchEvent(MotionEvent event) {
         if(event.getAction() == MotionEvent.ACTION_DOWN) {
             for(Square square:squares) {
                 if(square.handleTap(event.getX(),event.getY())) {
+                    animationHandler.addSquare(square);
                     break;
                 }
             }
