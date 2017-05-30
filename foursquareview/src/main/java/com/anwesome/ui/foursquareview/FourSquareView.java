@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.view.View;
 
 /**
@@ -38,5 +39,35 @@ public class FourSquareView extends View {
     }
     public void update(float factor) {
         postInvalidate();
+    }
+    private class Square {
+        private float x,y,size,scale = 0;
+        private int color;
+        public Square(float x,float y,int color) {
+            this.x = x;
+            this.y = y;
+            this.size = w/2;
+            this.color = color;
+        }
+        public void draw(Canvas canvas) {
+            canvas.save();
+            canvas.translate(x,y);
+            canvas.save();
+            canvas.scale(scale,scale);
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(color);
+            canvas.drawRect(new RectF(0,0,w,h),paint);
+            canvas.restore();
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setColor(Color.GRAY);
+            canvas.drawRect(new RectF(0,0,w,h),paint);
+            canvas.restore();
+        }
+        public void update(float factor) {
+            scale = factor;
+        }
+        public boolean handleTap(float x,float y) {
+            return x>=this.x && x<=this.x+size && y>=this.y && y<=this.y+size;
+        }
     }
 }
