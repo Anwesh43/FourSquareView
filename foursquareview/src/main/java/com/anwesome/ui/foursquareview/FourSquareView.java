@@ -37,8 +37,8 @@ public class FourSquareView extends View {
     }
     public void onDraw(Canvas canvas) {
         if(time == 0) {
-            w = canvas.getWidth();
-            h = canvas.getHeight();
+            w = (canvas.getWidth()*9)/10;
+            h = (canvas.getHeight()*9)/10;
             float x = 0,y = 0;
             int colors[] = {firstColor,secondColor,thirdColor,fourthColor};
             for(int i=0;i<4;i++) {
