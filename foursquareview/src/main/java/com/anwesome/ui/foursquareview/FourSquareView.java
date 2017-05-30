@@ -5,7 +5,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.view.MotionEvent;
 import android.view.View;
+
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * Created by anweshmishra on 31/05/17.
@@ -13,6 +16,8 @@ import android.view.View;
 
 public class FourSquareView extends View {
     private int time = 0,w,h;
+    private Square tappedSquare = null;
+    private ConcurrentLinkedQueue<Square> squares = new ConcurrentLinkedQueue<>();
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private int firstColor = Color.parseColor("#009688"),secondColor = Color.parseColor("#00BCD4"),thirdColor = Color.parseColor("#1E88E5"),fourthColor = Color.parseColor("#f44336");
     public FourSquareView(Context context) {
@@ -34,10 +39,36 @@ public class FourSquareView extends View {
         if(time == 0) {
             w = canvas.getWidth();
             h = canvas.getHeight();
+            float x = 0,y = 0;
+            int colors[] = {firstColor,secondColor,thirdColor,fourthColor};
+            for(int i=0;i<4;i++) {
+                squares.add(new Square(x,y,colors[i]));
+                x += w/2;
+                if(x >= w) {
+                    x = 0;
+                    y += h/2;
+                }
+            }
+        }
+        for(Square square:squares) {
+            square.draw(canvas);
         }
         time++;
     }
+    public boolean onTouchEvent(MotionEvent event) {
+        if(event.getAction() == MotionEvent.ACTION_DOWN && tappedSquare == null) {
+            for(Square square:squares) {
+                if(square.handleTap(event.getX(),event.getY())) {
+                    tappedSquare = square;
+                }
+            }
+        }
+        return true;
+    }
     public void update(float factor) {
+        if(tappedSquare != null) {
+            tappedSquare.update(factor);
+        }
         postInvalidate();
     }
     private class Square {
@@ -68,6 +99,9 @@ public class FourSquareView extends View {
         }
         public boolean handleTap(float x,float y) {
             return x>=this.x && x<=this.x+size && y>=this.y && y<=this.y+size;
+        }
+        public int hashCode() {
+            return (int)(x+y+color);
         }
     }
 }
