@@ -112,21 +112,33 @@ public class FourSquareView extends View {
         }
     }
     private class AnimationHandler {
+        private boolean isAnimated = false;
         private ConcurrentLinkedQueue<Square> tappedSquares = new ConcurrentLinkedQueue<>();
         public void animate() {
-            for(Square square:tappedSquares) {
-                square.update();
-            }
-            try {
-                Thread.sleep(100);
-                invalidate();
-            }
-            catch (Exception ex) {
+            if(isAnimated) {
+                for (Square square : tappedSquares) {
+                    square.update();
+                    if(square.stopped()) {
+                        tappedSquares.remove(square);
+                        if(tappedSquares.size() == 0) {
+                            isAnimated = false;
+                        }
+                    }
+                }
+                try {
+                    Thread.sleep(50);
+                    invalidate();
+                } catch (Exception ex) {
 
+                }
             }
         }
         public void addSquare(Square square) {
             tappedSquares.add(square);
+            if(!isAnimated) {
+                isAnimated = true;
+                postInvalidate();
+            }
         }
     }
 }
