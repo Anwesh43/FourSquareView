@@ -78,17 +78,18 @@ public class FourSquareView extends View {
             this.color = color;
         }
         public void draw(Canvas canvas) {
+            paint.setStrokeWidth(size/12);
             canvas.save();
             canvas.translate(x,y);
             canvas.save();
             canvas.scale(scale,scale);
             paint.setStyle(Paint.Style.FILL);
             paint.setColor(color);
-            canvas.drawRect(new RectF(0,0,w,h),paint);
+            canvas.drawRect(new RectF(0,0,size,size),paint);
             canvas.restore();
             paint.setStyle(Paint.Style.STROKE);
             paint.setColor(Color.GRAY);
-            canvas.drawRect(new RectF(0,0,w,h),paint);
+            canvas.drawRect(new RectF(0,0,size,size),paint);
             canvas.restore();
         }
         public void update() {
@@ -106,7 +107,16 @@ public class FourSquareView extends View {
             return dir == 0;
         }
         public boolean handleTap(float x,float y) {
-            return x>=this.x && x<=this.x+size && y>=this.y && y<=this.y+size && dir == 0;
+            boolean condition =  x>=this.x && x<=this.x+size && y>=this.y && y<=this.y+size && dir == 0;
+            if(condition) {
+                if(scale == 0) {
+                    dir = 1;
+                }
+                else {
+                    dir = -1;
+                }
+            }
+            return condition;
         }
         public int hashCode() {
             return (int)(x+y+color);
