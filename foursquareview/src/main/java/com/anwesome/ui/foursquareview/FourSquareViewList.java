@@ -31,9 +31,9 @@ public class FourSquareViewList {
             isShown = true;
         }
     }
-    public void addView(int...colors) {
+    public void addView(OnCompleteFillListener onCompleteFillListener,int...colors) {
         if(!isShown) {
-            listLayout.addView(colors);
+            listLayout.addView(onCompleteFillListener,colors);
         }
     }
     private class ListLayout extends ViewGroup {
@@ -61,9 +61,10 @@ public class FourSquareViewList {
             }
             setMeasuredDimension(w,hMax);
         }
-        public void addView(int ...colors) {
+        public void addView(OnCompleteFillListener onCompleteFillListener,int ...colors) {
             FourSquareView fourSquareView = new FourSquareView(getContext());
             fourSquareView.setColors(colors);
+            fourSquareView.setOnCompleteFillListener(onCompleteFillListener);
             addView(fourSquareView,new LayoutParams(w/2,w/2));
             requestLayout();
         }
