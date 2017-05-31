@@ -23,6 +23,7 @@ public class FourSquareViewList {
         this.activity = activity;
         this.scrollView = new ScrollView(activity);
         listLayout = new ListLayout(activity);
+        scrollView.addView(listLayout,new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
     }
     public void show() {
         if(!isShown) {
@@ -63,11 +64,11 @@ public class FourSquareViewList {
         public void addView(int ...colors) {
             FourSquareView fourSquareView = new FourSquareView(getContext());
             fourSquareView.setColors(colors);
-            addView(fourSquareView,new LayoutParams(9*w/10,9*w/10));
+            addView(fourSquareView,new LayoutParams(w/2,w/2));
             requestLayout();
         }
         public void onLayout(boolean reloaded,int a,int b,int wa,int ha) {
-            int x = w/20,y = h/20;
+            int x = w/4,y = h/20;
             for(int i=0;i<getChildCount();i++) {
                 View child = getChildAt(i);
                 child.layout(x,y,x+child.getMeasuredWidth(),y+child.getMeasuredHeight());
