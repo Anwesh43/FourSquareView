@@ -38,8 +38,9 @@ public class FourSquareView extends View {
             w = (canvas.getWidth()*9)/10;
             h = (canvas.getHeight()*9)/10;
             float x = w/20,y = h/20;
+            int px[]= {0,1,0,1},py[] = {0,0,1,1};
             for(int i=0;i<4;i++) {
-                squares.add(new Square(x,y,colors[i]));
+                squares.add(new Square(x,y,px[i],py[i],colors[i]));
                 x += 9*w/20;
                 if(x >= 9*w/10) {
                     x = w/20;
@@ -66,27 +67,29 @@ public class FourSquareView extends View {
         return true;
     }
     private class Square {
-        private float x,y,size,scale = 0,dir = 0;
+        private float x,y,size,scale = 0,dir = 0,px,py;
         private int color;
-        public Square(float x,float y,int color) {
+        public Square(float x,float y,float px,float py,int color) {
             this.x = x;
             this.y = y;
-            this.size = w/2;
+            this.size = 9*w/20;
             this.color = color;
+            this.px = px*size;
+            this.py = py*size;
         }
         public void draw(Canvas canvas) {
             paint.setStrokeWidth(size/12);
             canvas.save();
-            canvas.translate(x,y);
+            canvas.translate(x+px,y+py);
             canvas.save();
             canvas.scale(scale,scale);
             paint.setStyle(Paint.Style.FILL);
             paint.setColor(color);
-            canvas.drawRect(new RectF(0,0,size,size),paint);
+            canvas.drawRect(new RectF(-px,-py,-px+size,-py+size),paint);
             canvas.restore();
             paint.setStyle(Paint.Style.STROKE);
-            paint.setColor(Color.GRAY);
-            canvas.drawRect(new RectF(0,0,size,size),paint);
+            paint.setColor(Color.parseColor("#BDBDBD"));
+            canvas.drawRect(new RectF(-px,-py,-px+size,-py+size),paint);
             canvas.restore();
         }
         public void update() {
