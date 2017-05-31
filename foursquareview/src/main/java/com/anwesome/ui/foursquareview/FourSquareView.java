@@ -37,13 +37,13 @@ public class FourSquareView extends View {
         if(time == 0) {
             w = (canvas.getWidth()*9)/10;
             h = (canvas.getHeight()*9)/10;
-            float x = 0,y = 0;
+            float x = w/20,y = h/20;
             for(int i=0;i<4;i++) {
                 squares.add(new Square(x,y,colors[i]));
-                x += w/2;
-                if(x >= w) {
-                    x = 0;
-                    y += h/2;
+                x += 9*w/20;
+                if(x >= 9*w/10) {
+                    x = w/20;
+                    y += 9*h/20;
                 }
             }
             animationHandler = new AnimationHandler();
