@@ -17,10 +17,12 @@ import android.widget.ScrollView;
 public class FourSquareViewList {
     private Activity activity;
     private ScrollView scrollView;
+    private ListLayout listLayout;
     private boolean isShown = false;
     public FourSquareViewList(Activity activity) {
         this.activity = activity;
         this.scrollView = new ScrollView(activity);
+        listLayout = new ListLayout(activity);
     }
     public void show() {
         if(!isShown) {
@@ -30,6 +32,7 @@ public class FourSquareViewList {
     }
     public void addView(int...colors) {
         if(!isShown) {
+            listLayout.addView(colors);
         }
     }
     private class ListLayout extends ViewGroup {
@@ -59,6 +62,7 @@ public class FourSquareViewList {
         }
         public void addView(int ...colors) {
             FourSquareView fourSquareView = new FourSquareView(getContext());
+            fourSquareView.setColors(colors);
             addView(fourSquareView,new LayoutParams(9*w/10,9*w/10));
             requestLayout();
         }

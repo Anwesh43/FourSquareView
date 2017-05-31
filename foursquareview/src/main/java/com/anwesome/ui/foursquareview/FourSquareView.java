@@ -17,30 +17,22 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class FourSquareView extends View {
     private int time = 0,w,h;
     private AnimationHandler animationHandler;
+    public void setColors(int...colors) {
+        for(int i=0;i<colors.length;i++) {
+            this.colors[i] = colors[i];
+        }
+    }
     private ConcurrentLinkedQueue<Square> squares = new ConcurrentLinkedQueue<>();
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    private int firstColor = Color.parseColor("#009688"),secondColor = Color.parseColor("#00BCD4"),thirdColor = Color.parseColor("#1E88E5"),fourthColor = Color.parseColor("#f44336");
+    private int colors[] = {Color.parseColor("#009688"),Color.parseColor("#00BCD4"),Color.parseColor("#1E88E5"),Color.parseColor("#f44336")};
     public FourSquareView(Context context) {
         super(context);
-    }
-    public void setFirstColor(int firstColor) {
-        this.firstColor = firstColor;
-    }
-    public void setSecondColor(int secondColor) {
-        this.secondColor = secondColor;
-    }
-    public void setThirdColor(int thirdColor) {
-        this.thirdColor = thirdColor;
-    }
-    public void setFourthColor(int fourthColor) {
-        this.fourthColor = fourthColor;
     }
     public void onDraw(Canvas canvas) {
         if(time == 0) {
             w = (canvas.getWidth()*9)/10;
             h = (canvas.getHeight()*9)/10;
             float x = 0,y = 0;
-            int colors[] = {firstColor,secondColor,thirdColor,fourthColor};
             for(int i=0;i<4;i++) {
                 squares.add(new Square(x,y,colors[i]));
                 x += w/2;
