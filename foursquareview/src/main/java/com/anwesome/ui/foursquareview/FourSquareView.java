@@ -16,11 +16,16 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class FourSquareView extends View {
     private int time = 0,w,h;
+    private int filled = 0;
+    private OnCompleteFillListener onCompleteFillListener;
     private AnimationHandler animationHandler;
     public void setColors(int...colors) {
         for(int i=0;i<colors.length;i++) {
             this.colors[i] = colors[i];
         }
+    }
+    public void setOnCompleteFillListener(OnCompleteFillListener onCompleteFillListener) {
+        this.onCompleteFillListener = onCompleteFillListener;
     }
     private ConcurrentLinkedQueue<Square> squares = new ConcurrentLinkedQueue<>();
     private Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -89,10 +94,16 @@ public class FourSquareView extends View {
             if(scale > 1) {
                 dir = 0;
                 scale = 1;
+                if(filled<4) {
+                    filled++;
+                }
             }
             if(scale < 0) {
                 dir = 0;
                 scale = 0;
+                if(filled > 0) {
+                    filled --;
+                }
             }
         }
         public boolean stopped() {
@@ -128,6 +139,14 @@ public class FourSquareView extends View {
                         tappedSquares.remove(square);
                         if(tappedSquares.size() == 0) {
                             isAnimated = false;
+                            if(onCompleteFillListener != null) {
+                                if(filled == 4) {
+                                    onCompleteFillListener.onFill();
+                                }
+                                else if(filled == 0) {
+                                    onCompleteFillListener.onEmpty();
+                                }
+                            }
                         }
                     }
                 }
